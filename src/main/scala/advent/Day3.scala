@@ -5,7 +5,7 @@ package advent
   */
 object Day3 extends App {
 
-  val input = io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("day3.txt")).getLines.mkString
+  val input = io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("day3.txt")).getLines.mkString.toList
 
   case class Coord(x: Int, y: Int) {
     def move(c: Char) = c match {
@@ -21,8 +21,14 @@ object Day3 extends App {
   }
 
   def part1 = {
-    houses(input.toList).distinct.size
+    houses(input).distinct.size
+  }
+
+  def part2 = {
+    val (santa, robo) = input.grouped(2).map{ case List(a, b) => (a, b) }.toList.unzip
+    (houses(santa) ::: houses(robo)).distinct.size
   }
 
   println(s"part1 = $part1")
+  println(s"part2 = $part2")
 }
