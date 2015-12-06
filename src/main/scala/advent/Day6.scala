@@ -38,6 +38,7 @@ object Day6 extends App with JavaTokenParsers {
 
   case class Display(history: List[Mutate]) {
     private val r = history.reverse
+
     def lightOnAt(c: Coord) = {
       def intersect(h: List[Mutate]): Boolean = h match {
         case Nil => false
@@ -48,6 +49,15 @@ object Day6 extends App with JavaTokenParsers {
       }
       intersect(r)
     }
+
+    import Math.max
+
+    def lightBrightnessAt(c: Coord) = history.foldLeft(0) { (brightness, mut) => mut.op match {
+      case On if mut.contains(c) => brightness + 1
+      case Off if mut.contains(c) => max(0, brightness - 1)
+      case Toggle if mut.contains(c) => brightness + 2
+      case _ => brightness
+    }}
   }
 
   val d = Display(input.map(parse(line, _).get))
@@ -58,6 +68,12 @@ object Day6 extends App with JavaTokenParsers {
     if d.lightOnAt((x, y))
   } yield true
 
+  def part2 = for {
+    x <- 0 to 999
+    y <- 0 to 999
+  } yield d.lightBrightnessAt((x, y))
+
   println(s"part1 = ${part1.size}")
+  println(s"part1 = ${part2.sum}")
 
 }
