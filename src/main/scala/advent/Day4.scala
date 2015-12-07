@@ -7,7 +7,7 @@ import java.security.MessageDigest
 /**
   * Created by james on 04/12/2015.
   */
-object Day4 extends App {
+object Day4 extends Advent {
 
   def md5(s: String) = MessageDigest.getInstance("MD5").digest(s.getBytes).map("%02X".format(_)).mkString
 
@@ -19,7 +19,4 @@ object Day4 extends App {
   def part1 = solve("00000", secret)
 
   def part2 = solve("000000", secret)
-
-  println(s"part1 = $part1")
-  println(s"part2 = $part2")
 }

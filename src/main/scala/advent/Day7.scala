@@ -10,9 +10,7 @@ import scala.tools.reflect.ToolBox
 /**
   * Created by james on 07/12/2015.
   */
-object Day7 extends App with JavaTokenParsers {
-
-  val input = io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("day7.txt")).getLines.mkString("\n")
+object Day7 extends Advent with JavaTokenParsers {
 
   def quotedIdent = ident ^^ { case i => s"`$i`" }
 
@@ -28,15 +26,12 @@ object Day7 extends App with JavaTokenParsers {
 
   def line = (op <~ "->") ~ quotedIdent ^^ { case o~i => s"lazy val $i = $o" }
 
-  val cm = universe.runtimeMirror(getClass.getClassLoader)
-  val tb = cm.mkToolBox()
+  lazy val cm = universe.runtimeMirror(getClass.getClassLoader)
+  lazy val tb = cm.mkToolBox()
 
-  val wires = parse(line +, input).get.mkString("; ")
+  lazy val wires = parse(line +, input.mkString("\n")).get.mkString("; ")
 
   def part1 = tb.eval(tb.parse(s"class C { $wires }; (new C).a"))
   def part2 = tb.eval(tb.parse(s"class C { $wires }; class D extends C { override lazy val b = (new C).a }; (new D).a"))
-
-  println(s"part1 = $part1")
-  println(s"part2 = $part2")
 }
 

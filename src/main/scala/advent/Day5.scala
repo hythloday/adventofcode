@@ -5,9 +5,7 @@ import Math.abs
 /**
   * Created by james on 05/12/2015.
   */
-object Day5 extends App {
-
-  val input = io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("day5.txt")).getLines.toList
+object Day5 extends Advent {
 
   def part1 = {
     def isVowel(c: Char) = "aeiou" contains c
@@ -37,7 +35,4 @@ object Day5 extends App {
 
     input count isNice
   }
-
-  println(s"part1 = $part1")
-  println(s"part2 = $part2")
 }

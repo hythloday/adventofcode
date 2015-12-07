@@ -1,14 +1,12 @@
 package advent
 
-import scala.annotation.tailrec
 import scala.util.parsing.combinator._
+import Math.max
 
 /**
   * Created by james on 06/12/2015.
   */
-object Day6 extends App with JavaTokenParsers {
-
-  val input = io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("day6.txt")).getLines.toList
+object Day6 extends Advent with JavaTokenParsers {
 
   object Op extends Enumeration {
     type Op = Value
@@ -50,8 +48,6 @@ object Day6 extends App with JavaTokenParsers {
       intersect(r)
     }
 
-    import Math.max
-
     def lightBrightnessAt(c: Coord) = history.foldLeft(0) { (brightness, mut) => mut.op match {
       case On if mut.contains(c) => brightness + 1
       case Off if mut.contains(c) => max(0, brightness - 1)
@@ -60,20 +56,20 @@ object Day6 extends App with JavaTokenParsers {
     }}
   }
 
-  val d = Display(input.map(parse(line, _).get))
+  lazy val d = Display(input.map(parse(line, _).get))
 
-  def part1 = for {
-    x <- 0 to 999
-    y <- 0 to 999
-    if d.lightOnAt((x, y))
-  } yield true
+  def part1 = {
+    for {
+      x <- 0 to 999
+      y <- 0 to 999
+      if d.lightOnAt((x, y))
+    } yield true
+  }.size
 
-  def part2 = for {
-    x <- 0 to 999
-    y <- 0 to 999
-  } yield d.lightBrightnessAt((x, y))
-
-  println(s"part1 = ${part1.size}")
-  println(s"part1 = ${part2.sum}")
-
+  def part2 = {
+    for {
+      x <- 0 to 999
+      y <- 0 to 999
+    } yield d.lightBrightnessAt((x, y))
+  }.sum
 }
