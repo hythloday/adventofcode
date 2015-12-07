@@ -14,19 +14,19 @@ object Day7 extends App with JavaTokenParsers {
 
   val input = io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("day7.txt")).getLines.mkString("\n")
 
-  def quotedIdent: Parser[String] = ident ^^ { case i => s"`$i`" }
+  def quotedIdent = ident ^^ { case i => s"`$i`" }
 
   def op = {
     def expr = quotedIdent | decimalNumber
-    def and: Parser[String] = expr ~ "AND" ~ expr ^^ { case l ~ _ ~ r => s"$l & $r" }
-    def or: Parser[String] = expr ~ "OR" ~ expr ^^ { case l ~ _ ~ r => s"$l | $r" }
-    def lshift: Parser[String] = expr ~ "LSHIFT" ~ expr ^^ { case i ~ _ ~ l => s"$i << $l" }
-    def rshift: Parser[String] = expr ~ "RSHIFT" ~ expr ^^ { case i ~ _ ~ l => s"$i >> $l" }
-    def not: Parser[String] = "NOT" ~ expr ^^ { case _ ~ i => s"~$i" }
+    def and = (expr <~ "AND") ~ expr ^^ { case l~r => s"$l & $r" }
+    def or = (expr <~ "OR") ~ expr ^^ { case l~r => s"$l | $r" }
+    def lshift = (expr <~ "LSHIFT") ~ expr ^^ { case i~l => s"$i << $l" }
+    def rshift = (expr <~ "RSHIFT") ~ expr ^^ { case i~l => s"$i >> $l" }
+    def not = "NOT" ~> expr ^^ { case i => s"~$i" }
     and | or | lshift | rshift | not | expr
   }
 
-  def line = op ~ "->" ~ quotedIdent ^^ { case o ~ _ ~ i => s"lazy val $i = $o" }
+  def line = (op <~ "->") ~ quotedIdent ^^ { case o~i => s"lazy val $i = $o" }
 
   val cm = universe.runtimeMirror(getClass.getClassLoader)
   val tb = cm.mkToolBox()
