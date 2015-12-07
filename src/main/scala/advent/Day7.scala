@@ -34,7 +34,9 @@ object Day7 extends App with JavaTokenParsers {
   val wires = parse(line +, input).get.mkString("; ")
 
   def part1 = tb.eval(tb.parse(s"class C { $wires }; (new C).a"))
+  def part2 = tb.eval(tb.parse(s"class C { $wires }; class D extends C { override lazy val b = (new C).a }; (new D).a"))
 
   println(s"part1 = $part1")
+  println(s"part2 = $part2")
 }
 
