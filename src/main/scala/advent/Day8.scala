@@ -19,7 +19,18 @@ object Day8 extends Advent with JavaTokenParsers {
   }
 
   def part1 = input.map(_.length).sum - input.map(parse(escapedLine, _).get.size).sum
-  def part2 = "???"
+
+  def quotLen = quot ^^^ { 2 }
+  def bsLen = bs ^^^ { 2 }
+  def escQuotLen = escQuot ^^^ { 4 }
+  def escChrLen = escChr ^^^ { 5 }
+  def charLen = oneChr ^^^ { 1 }
+  def lineLen = quotLen | escChrLen | charLen | bsLen | escQuotLen
+  def escape(line: String) = {
+    parse(lineLen +, line).get.sum + 2
+  }
+
+  def part2 = input.map(escape).sum - input.map(_.length).sum
 }
 
 
