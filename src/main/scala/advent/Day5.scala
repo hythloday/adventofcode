@@ -23,7 +23,7 @@ object Day5 extends Advent {
   }
 
   def part2 = {
-    def positionPairs(s: String): Map[String, List[Int]] = s.sliding(2).zipWithIndex.toList.groupBy(_._1).mapValues(_.map(_._2))
+    def positionPairs(s: String) = s.sliding(2).zipWithIndex.toList.groupBy(_._1).mapValues(_.map(_._2))
     def nonAdjacentPair(pair: List[Int]) = abs(pair.head - pair.last) > 1
     def nonAdjacent(xs: List[Int]) = xs.combinations(2) exists nonAdjacentPair
     def prop1(s: String) = positionPairs(s).values exists nonAdjacent
