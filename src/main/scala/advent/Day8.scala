@@ -5,7 +5,7 @@ import scala.util.parsing.combinator.JavaTokenParsers
 /**
   * Created by james on 07/12/2015.
   */
-object Day8 extends Advent with JavaTokenParsers {
+object Day8 extends Advent {
 
   def bs = "\\"
   def quot = "\""

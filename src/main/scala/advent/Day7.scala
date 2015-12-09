@@ -10,7 +10,7 @@ import scala.tools.reflect.ToolBox
 /**
   * Created by james on 07/12/2015.
   */
-object Day7 extends Advent with JavaTokenParsers {
+object Day7 extends Advent {
 
   def quotedIdent = ident ^^ { case i => s"`$i`" }
 

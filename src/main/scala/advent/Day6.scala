@@ -6,7 +6,7 @@ import Math.max
 /**
   * Created by james on 06/12/2015.
   */
-object Day6 extends Advent with JavaTokenParsers {
+object Day6 extends Advent {
 
   object Op extends Enumeration {
     type Op = Value
