@@ -23,6 +23,11 @@ object Day14 extends Advent {
     whole + partial
   }
 
+  lazy val stars = for (s <- 1 to 2503) yield {
+    val dists = reindeer.map(distance(s))
+    reindeer.zip(dists).collect{ case (r, d) if d == dists.max => r }
+  }
+
   def part1 = reindeer.map(distance(2503)).max
-  def part2 = ???
+  def part2 = stars.flatten.groupBy(identity).values.map(_.size).max
 }
