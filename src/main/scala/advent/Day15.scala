@@ -16,6 +16,8 @@ object Day15 extends Advent {
   def bake(recipe: Map[Int, Ingredient]) = recipe.map { case (qty, ingredient) => ingredient.qualities.map(_*qty) }
     .transpose.map(_.sum).map(Math.max(0, _)).product
 
+  def calories(recipe: Map[Int, Ingredient]) = recipe.map { case (qty, ingredient) => ingredient.calories*qty }.sum
+
   def split4(i: Int) = for {
     a <- 0 to i
     b <- 0 to i - a
@@ -24,5 +26,5 @@ object Day15 extends Advent {
   } yield Seq(a, b, c, d)
 
   def part1 = split4(100).map(qtys => qtys.zip(ingredients).toMap).map(bake).max
-  def part2 = ???
+  def part2 = split4(100).map(qtys => qtys.zip(ingredients).toMap).filter(r => calories(r) == 500).map(bake).max
 }
