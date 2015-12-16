@@ -20,6 +20,17 @@ object Day16 extends Advent {
 
   def canBeSender(b: Sue) = cardSue.filter{ case (k, v) => b.keys.toSeq contains k } == b
 
+  def canBeSenderPart2(b: Sue) = {
+    val s = cardSue.filter{ case (k, v) => b.keys.toSeq contains k }
+    (s.keys.toList.sorted, s.keys.toList.sorted.map(s), s.keys.toList.sorted.map(b)).zipped.map {
+      case ("cats", sv, bv) => bv > sv
+      case ("trees", sv, bv) => bv > sv
+      case ("pomeranians", sv, bv) => bv < sv
+      case ("goldfish", sv, bv) => bv < sv
+      case (_, sv, bv) => sv == bv
+    }.forall(identity)
+  }
+
   def part1 = sues.collect{ case (n, sue) if canBeSender(sue) => n }
-  def part2 = ???
+  def part2 = sues.collect{ case (n, sue) if canBeSenderPart2(sue) => n }
 }
