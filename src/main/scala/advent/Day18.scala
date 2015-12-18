@@ -35,8 +35,12 @@ object Day18 extends Advent {
     } yield x -> y -> next(g(x -> y), neighbours(x, y).count(g))
   }.toMap.withDefaultValue(false)
 
+  lazy val stuck = for(x <- Seq(0, 99); y <- Seq(0, 99)) yield x -> y
+  def withStuckLights(g: Grid) = g ++ stuck.map(s => s -> true).toMap
+
   lazy val simulate100 = Function.chain((1 to 100).map(i => simulate _))
   def part1 = simulate100(state0).values.count(identity)
 
-  def part2 = ???
+  lazy val stuckSimulate100 = Function.chain((1 to 100).map(i => simulate _ andThen withStuckLights))
+  def part2 = stuckSimulate100(withStuckLights(state0)).values.count(identity)
 }
