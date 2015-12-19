@@ -14,6 +14,18 @@ object Day19 extends Advent {
     case (`from`, x) => s.take(x) + to + s.drop(x + from.length)
   }
 
+  def step(molecule: String): String = {
+    for {
+      (lhs, rhs) <- transitions
+      out <- transition(rhs, lhs, molecule)
+    } yield out
+  }.sortBy(_.length).head
+
+  def analyse = {
+    lazy val stream: Stream[String] = Stream.cons(molecule, stream.map(step))
+    stream
+  }
+
   def part1 = transitions.flatMap{ case (l, r) => transition(l, r, molecule) }.distinct.size
-  def part2 = ???
+  def part2 = analyse.takeWhile(s => !(s contains "e")).size
 }
