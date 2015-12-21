@@ -16,6 +16,8 @@ object Day20 extends Advent {
 
   def presents(n: Int) = factorsOf(n).sum * 10
 
+  def lazyPresents(n: Int) = factorsOf(n).filter(f => f * 50 >= n).sum * 11
+
   def draw(n: Int, from: List[Int]): List[Int] = if (n == 0) List(1) else for {
     h <- from
     t <- draw(n-1, from)
@@ -26,6 +28,11 @@ object Day20 extends Advent {
     if (candidates.nonEmpty) candidates.min else estimate(n+1)
   }
 
+  def lazyElvesEstimate(n: Int): Int = {
+    val candidates = draw(n, primes.take(n)).filter(lazyPresents(_) > 36000000)
+    if (candidates.nonEmpty) candidates.min else lazyElvesEstimate(n+1)
+  }
+
   def part1 = (1 to estimate(1)).map(n => n -> presents(n)).filter(_._2 > 36000000).minBy(_._1)._1
-  def part2 = ()
+  def part2 = (1 to lazyElvesEstimate(1)).map(n => n -> lazyPresents(n)).filter(_._2 > 36000000).minBy(_._1)._1
 }
