@@ -36,5 +36,5 @@ object Day21 extends Advent {
   lazy val boss = Actor(103, 9, 2)
 
   def part1 = purchases.toList.sortBy(_.cost).map(inv => Actor(100, inv.damage, inv.armour)).dropWhile(bossWins).head
-  def part2 = ???
+  def part2 = purchases.toList.sortBy(_.cost).reverse.map(inv => Actor(100, inv.damage, inv.armour)).dropWhile(bossWins).head
 }
